@@ -1,0 +1,92 @@
+Create a complete frontend for an e-commerce application using React that connects to this Django REST API backend.
+
+TECHNOLOGY STACK:
+- Frontend: React with React Router
+- HTTP Client: Axios or Fetch API
+- Authentication: JWT tokens (store in localStorage)
+- Styling: CSS or Tailwind CSS
+
+API BASE URL: http://localhost:8000/api/
+
+DATABASE MODELS:
+
+1. User (Custom Django User):
+   - Fields: id, username, email, password, role (FK to Role)
+   - Extends Django's AbstractUser
+
+2. Role:
+   - Fields: id, name (Char 50)
+
+3. Category:
+   - Fields: id, name (Char 255), parent (self-referential FK)
+
+4. Product:
+   - Fields: id, name (Char 255), category (FK to Category), description (Text)
+
+5. ProductImage:
+   - Fields: id, product (FK to Product), image (ImageField)
+
+6. ProductVariant:
+   - Fields: id, product (FK to Product), price (Decimal), quantity (Integer)
+
+7. ProductColor:
+   - Fields: id, color_name (Char 50)
+
+8. ProductSize:
+   - Fields: id, size (Char 50)
+
+9. Units:
+   - Fields: id, unit_type (Char 50), value (Char 50)
+
+10. VariantAttributes:
+    - Fields: id, product_variant (FK to ProductVariant), color (FK to ProductColor), size (FK to ProductSize), unit (FK to Units)
+
+11. Order:
+    - Fields: id, user (FK to User), total_price (Decimal), status (Char 20: Pending/Shipped/Delivered), created_at (DateTime)
+
+12. OrderItem:
+    - Fields: id, order (FK to Order), product_variant (FK to ProductVariant), quantity (Integer), price (Decimal)
+
+13. Payment:
+    - Fields: id, order (OneToOne to Order), payment_method (Char 50), payment_status (Char 50), transaction_id (Char 100)
+
+API ENDPOINTS:
+
+Authentication:
+- POST /api/token/ - Obtain JWT tokens (body: username, password) - returns {access, refresh}
+- POST /api/token/refresh/ - Refresh access token (body: refresh)
+
+Accounts (/api/accounts/):
+- GET/POST /users/ - List/Create users
+- GET/PUT/DELETE /users/{id}/ - Read/Update/Delete user
+- GET/POST /roles/ - List/Create roles
+- GET/PUT/DELETE /roles/{id}/ - Read/Update/Delete role
+
+Products (/api/products/):
+- GET/POST /categories/ - List/Create categories
+- GET/PUT/DELETE /categories/{id}/ - Read/Update/Delete category
+- GET/POST /items/ - List/Create products
+- GET/PUT/DELETE /items/{id}/ - Read/Update/Delete product
+- GET/POST /variants/ - List/Create product variants
+- GET/PUT/DELETE /variants/{id}/ - Read/Update/Delete variant
+- GET/POST /colors/ - List/Create colors
+- GET/POST /sizes/ - List/Create sizes
+- GET/POST /units/ - List/Create units
+
+Orders (/api/orders/):
+- GET/POST / - List/Create orders
+- GET/PUT/DELETE /{id}/ - Read/Update/Delete order
+- User is automatically assigned from authenticated request
+
+Authentication required for all endpoints (JWT Bearer token). Public read access for products and categories.
+
+Create the following pages:
+1. Login page - username/password form, obtain JWT token on submit
+2. Product listing page - grid of products with images, prices
+3. Product detail page - product info, variants with colors/sizes
+4. Shopping cart - list items, quantities, total price
+5. Order placement - create order from cart
+6. Order history - list of user's past orders with status
+7. Admin dashboard - manage products, categories, orders (for admin users)
+
+Include JWT token storage in localStorage, token refresh logic, protected routes, loading states, and error handling.
