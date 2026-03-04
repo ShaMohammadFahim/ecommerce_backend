@@ -23,7 +23,7 @@ class OrderItem(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
    
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):   
     
         self.product_variant.quantity -= self.quantity
         self.product_variant.save()
